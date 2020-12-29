@@ -1,16 +1,21 @@
 package com.kathleenwang.animalcrossingfish
 
 import android.os.AsyncTask
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import org.json.JSONArray
 import org.json.JSONObject
 import java.net.URL
 
+
 class MainActivity : AppCompatActivity() {
+    var mainText:TextView?  = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        mainText = findViewById<TextView>(R.id.mainText)
         flickrTask().execute()
     }
     inner class flickrTask(): AsyncTask<String, Void, String>() {
@@ -28,12 +33,19 @@ class MainActivity : AppCompatActivity() {
             return response
         }
 
-        override fun onPostExecute(result: String?) {
+        override fun onPostExecute(result: String) {
             super.onPostExecute(result)
             try {
                 /* Extracting JSON returns from the API */
                 val jsonObj = JSONObject(result)
-                Log.d("Post:", jsonObj.toString())
+                val jsonKeys = jsonObj.keys()
+                val fishItems = mutableListOf<JSONObject>()
+                for (i in jsonKeys) {
+                    val item = jsonObj.getJSONObject(i)
+                    fishItems.add(item)
+                }
+                Log.d("post", "$fishItems")
+                mainText!!.text = fishItems.toString()
 
             } catch (e: Exception) {
                 Log.d("Post:", "error")
