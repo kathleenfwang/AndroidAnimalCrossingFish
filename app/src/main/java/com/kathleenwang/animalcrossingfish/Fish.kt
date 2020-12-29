@@ -10,19 +10,35 @@ class Fish(val name: String, val price: Int, var availability: Availability, val
     }
 }
 
-class Availability(val months:String,val location:String,val rarity:String,var available: Boolean = false) {
+class Availability(val months:String,val location:String,val rarity:String,) {
+    var available = false
+
     init {
+        available = false
+        if (months.length <= 1) {
+            available = true
+        }
+        else {
         val currentMonth = 12
-        val monthsSplit = months.split("-")
+        var monthsSplit = months.split("-")
         val first = monthsSplit.first().toInt()
         val last = monthsSplit.last().toInt()
-        if (last < first) {
-            if (currentMonth >= first || currentMonth <= last) available = true}
-        else { if (currentMonth in first..last) available = true }
+            available = if (last < first) {
+                currentMonth >= first || currentMonth <= last
+            } else {
+                currentMonth in first..last
+            }
+
     }
+        Log.d("month:", available.toString())
+}
 
     override fun toString(): String {
         return "months=$months, location=$location, rarity=$rarity, available=$available"
     }
 
 }
+
+
+
+

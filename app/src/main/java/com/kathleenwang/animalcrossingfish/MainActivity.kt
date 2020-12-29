@@ -54,13 +54,12 @@ class MainActivity : AppCompatActivity() {
                     fishItems.add(newFish)
                 }
 
-                Log.d("Post:","${fishItems}")
                 var arrayAdapter = ArrayAdapter<Fish>(propContext,android.R.layout.simple_list_item_1, fishItems)
 
 //                mainText!!.text = "Total fish: ${fishItems.size}"
                 propListView.adapter = arrayAdapter
             } catch (e: Exception) {
-                Log.d("Post:", "error")
+                Log.d("Post:", "$e")
             }
 
         }
