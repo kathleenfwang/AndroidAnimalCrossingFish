@@ -12,6 +12,9 @@ import org.json.JSONArray
 import org.json.JSONObject
 import org.w3c.dom.Text
 import java.net.URL
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class MainActivity : AppCompatActivity() {
@@ -42,6 +45,8 @@ class MainActivity : AppCompatActivity() {
         override fun onPostExecute(result: String) {
             super.onPostExecute(result)
             val fishItems = ArrayList<Fish>()
+            val cal = Calendar.getInstance()
+            val month = SimpleDateFormat("MMM").format(cal.getTime())
             try {
                 /* Extracting JSON returns from the API */
                 val jsonObj = JSONObject(result)
@@ -55,7 +60,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 val filteredFishItems = fishItems.filter{ it.availability.available }
                 var arrayAdapter = ArrayAdapter<Fish>(propContext,android.R.layout.simple_list_item_1, filteredFishItems)
-                mainText!!.text = "Total fish available: ${filteredFishItems.size}"
+                mainText!!.text = "Total fish in ${month}: ${filteredFishItems.size} / ${fishItems.size}"
                 propListView.adapter = arrayAdapter
             } catch (e: Exception) {
                 Log.d("Post:", "$e")

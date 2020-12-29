@@ -2,6 +2,8 @@ package com.kathleenwang.animalcrossingfish
 
 import android.util.Log
 import org.json.JSONObject
+import java.text.SimpleDateFormat
+import java.util.*
 
 class Fish(val name: String, val price: Int, var availability: Availability, val imageSrc: String) {
 
@@ -16,14 +18,14 @@ class Availability(val months:String,val location:String,val rarity:String,) {
     init {
         available = if (months.length <= 1) { true }
         else {
-            val currentMonth = 12
+            val month = Calendar.getInstance().get(Calendar.MONTH)
             var monthsSplit = months.split("-")
             val first = monthsSplit.first().toInt()
             val last = monthsSplit.last().toInt()
             if (last < first) {
-                currentMonth >= first || currentMonth <= last
+                month >= first || month <= last
             } else {
-                currentMonth in first..last
+                month in first..last
             }
         }
         Log.d("month:", available.toString())
