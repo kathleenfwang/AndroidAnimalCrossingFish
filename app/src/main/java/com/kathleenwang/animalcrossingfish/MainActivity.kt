@@ -53,15 +53,13 @@ class MainActivity : AppCompatActivity() {
                     val newFish = Fish(item["file-name"].toString(), item["price"].toString().toInt(), Availability(months, availability["location"].toString(), availability["rarity"].toString() ), item["image_uri"].toString())
                     fishItems.add(newFish)
                 }
-
-                var arrayAdapter = ArrayAdapter<Fish>(propContext,android.R.layout.simple_list_item_1, fishItems)
-
-//                mainText!!.text = "Total fish: ${fishItems.size}"
+                val filteredFishItems = fishItems.filter{ it.availability.available }
+                var arrayAdapter = ArrayAdapter<Fish>(propContext,android.R.layout.simple_list_item_1, filteredFishItems)
+                mainText!!.text = "Total fish available: ${filteredFishItems.size}"
                 propListView.adapter = arrayAdapter
             } catch (e: Exception) {
                 Log.d("Post:", "$e")
             }
-
         }
     }
 }
