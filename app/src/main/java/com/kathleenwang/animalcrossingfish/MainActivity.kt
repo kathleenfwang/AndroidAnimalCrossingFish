@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
 
         override fun onPostExecute(result: String) {
             super.onPostExecute(result)
-            val fishItems = mutableListOf<Fish>()
+            val fishItems = ArrayList<Fish>()
             try {
                 /* Extracting JSON returns from the API */
                 val jsonObj = JSONObject(result)
@@ -53,11 +53,12 @@ class MainActivity : AppCompatActivity() {
                     val newFish = Fish(item["file-name"].toString(), item["price"].toString().toInt(), Availability(months, availability["location"].toString(), availability["rarity"].toString() ), item["image_uri"].toString())
                     fishItems.add(newFish)
                 }
-                var arrayAdapter = ArrayAdapter<Fish>(propContext, R.layout.list_item, fishItems)
-                Log.d("Post:","${fishItems}")
-                mainText!!.text = "Total fish: ${fishItems.size}"
-                propListView.adapter = arrayAdapter
 
+                Log.d("Post:","${fishItems}")
+                var arrayAdapter = ArrayAdapter<Fish>(propContext,android.R.layout.simple_list_item_1, fishItems)
+
+//                mainText!!.text = "Total fish: ${fishItems.size}"
+                propListView.adapter = arrayAdapter
             } catch (e: Exception) {
                 Log.d("Post:", "error")
             }
