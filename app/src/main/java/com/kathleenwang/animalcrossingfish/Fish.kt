@@ -7,14 +7,19 @@ import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
 
+@RequiresApi(Build.VERSION_CODES.O)
 class Fish(var name: String, val price: Int, var availability: Availability, val imageSrc: String) {
     init {
-            var newName: String = ""
+            var newName = mutableListOf<String>()
             var newList = name.split("_") // ["gold", "fish"]
+
             for (i in newList) {
-                newName = i[0].toUpperCase() + i.substring(startIndex = 1)
+                var word = i[0].toUpperCase() + i.substring(startIndex = 1)
+                newName.add(word)
             }
-            name = newName
+        val finalName = java.lang.String.join(" ", newName)
+        Log.d("Fish: ", finalName)
+            name = finalName
     }
     override fun toString(): String {
         return "$name, price=$price, availability:$availability, imageSrc=$imageSrc"

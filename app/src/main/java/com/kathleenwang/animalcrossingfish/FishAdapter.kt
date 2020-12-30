@@ -34,6 +34,10 @@ class FishAdapter(val context: Context, val fishes: List<Fish>) :
             itemView.rvRarity.text = fish.availability.rarity
 
             when (fish.availability.rarity) {
+                "Common" -> itemView.rvRarity.setTextColor(ContextCompat.getColor(
+                    context,
+                    R.color.purple_500
+                ))
                 "Uncommon" -> itemView.rvRarity.setTextColor(
                     ContextCompat.getColor(
                         context,
