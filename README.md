@@ -1,6 +1,6 @@
 # KotlinACFish
 
-- Displays current fish information available in Animal Crossing New Horizons 
+- Displays current fish information available in Animal Crossing New Horizons using ACNH API
 - Can filter by fish location: River, Sea, etc. 
 <br>
 
