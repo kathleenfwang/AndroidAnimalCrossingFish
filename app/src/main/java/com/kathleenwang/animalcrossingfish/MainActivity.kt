@@ -8,6 +8,8 @@ import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import org.json.JSONArray
 import org.json.JSONObject
 import org.w3c.dom.Text
@@ -15,21 +17,19 @@ import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
-
-
+import kotlinx.android.synthetic.main.activity_main.*
+private var fishes = mutableListOf<Fish>()
 class MainActivity : AppCompatActivity() {
-    var xmlListView: ListView? = null
-    var mainText:TextView? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        xmlListView = findViewById(R.id.xmlListView)
-        mainText = findViewById(R.id.mainText)
-        fishTask(this,xmlListView!!).execute()
+        val adapter = FishAdapter(this, fishes)
+        fishTask(this,rvList,adapter).execute()
     }
-    inner class fishTask(context: Context, listView: ListView): AsyncTask<String, Void, String>() {
+    inner class fishTask(context: Context, listView: RecyclerView, adapter: FishAdapter): AsyncTask<String, Void, String>() {
         var propContext = context
         var propListView = listView
+        var propAdapter = adapter
         override fun doInBackground(vararg params: String?): String? {
             var response: String?
             val url = "https://acnhapi.com/v1/fish"
@@ -44,6 +44,8 @@ class MainActivity : AppCompatActivity() {
 
         override fun onPostExecute(result: String) {
             super.onPostExecute(result)
+            rvList.adapter = propAdapter
+            rvList.layoutManager = LinearLayoutManager(propContext)
             val fishItems = ArrayList<Fish>()
             val cal = Calendar.getInstance()
             val month = SimpleDateFormat("MMM").format(cal.getTime())
@@ -59,9 +61,11 @@ class MainActivity : AppCompatActivity() {
                     fishItems.add(newFish)
                 }
                 val filteredFishItems = fishItems.filter{ it.availability.available }
-                var arrayAdapter = ArrayAdapter<Fish>(propContext,android.R.layout.simple_list_item_1, filteredFishItems)
-                mainText!!.text = "Total fish in ${month}: ${filteredFishItems.size} / ${fishItems.size}"
-                propListView.adapter = arrayAdapter
+                fishes.addAll(filteredFishItems)
+                mainText.text = "Total fish available for ${month}: ${filteredFishItems.size} / ${fishItems.size}"
+                propAdapter.notifyDataSetChanged()
+
+
             } catch (e: Exception) {
                 Log.d("Post:", "$e")
             }
