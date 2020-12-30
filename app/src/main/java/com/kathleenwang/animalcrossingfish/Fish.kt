@@ -1,12 +1,21 @@
 package com.kathleenwang.animalcrossingfish
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
 
-class Fish(val name: String, val price: Int, var availability: Availability, val imageSrc: String) {
-
+class Fish(var name: String, val price: Int, var availability: Availability, val imageSrc: String) {
+    init {
+            var newName: String = ""
+            var newList = name.split("_") // ["gold", "fish"]
+            for (i in newList) {
+                newName = i[0].toUpperCase() + i.substring(startIndex = 1)
+            }
+            name = newName
+    }
     override fun toString(): String {
         return "$name, price=$price, availability:$availability, imageSrc=$imageSrc"
     }

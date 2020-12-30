@@ -19,6 +19,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlinx.android.synthetic.main.activity_main.*
 private var fishes = mutableListOf<Fish>()
+private var search = ""
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,7 +61,7 @@ class MainActivity : AppCompatActivity() {
                     val newFish = Fish(item["file-name"].toString(), item["price"].toString().toInt(), Availability(months, availability["location"].toString(), availability["rarity"].toString() ), item["image_uri"].toString())
                     fishItems.add(newFish)
                 }
-                val filteredFishItems = fishItems.filter{ it.availability.available }
+                val filteredFishItems = fishItems.filter{ it.availability.available}
                 fishes.addAll(filteredFishItems)
                 mainText.text = "Total fish available for ${month}: ${filteredFishItems.size} / ${fishItems.size}"
                 propAdapter.notifyDataSetChanged()
@@ -70,5 +71,7 @@ class MainActivity : AppCompatActivity() {
                 Log.d("Post:", "$e")
             }
         }
+
+
     }
 }
